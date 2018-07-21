@@ -1,0 +1,33 @@
+{% load bootstrap4 %}
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {% if title %}
+  <title>Instagram-{{title}}</title>
+  {% else %}
+  <title>Instagram</title>
+  {% endif %}
+
+  {% block styles %}
+    {% bootstrap_css %}
+  {% endblock %}
+
+</head>
+
+<body>
+
+  {% block content %}  {%endblock%}
+
+
+  {% block scripts %}
+    {% bootstrap_javascript %}
+  {% endblock %}
+
+</body>
+
+</html>
