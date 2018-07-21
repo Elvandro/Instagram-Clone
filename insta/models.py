@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Profile(models.Model):
-    profile_name = models.CharField(default='User')
+    profile_name = models.CharField(max_length=30, default='User')
     profile_photo = models.ImageField(upload_to="profiles/")
     bio = models.TextField(blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -28,7 +28,7 @@ class Image(models.Model):
     image_caption = models.TextField(blank=True)
     profile_key = models.ForeignKey(Profile,on_delete=models.CASCADE)
     user_key = models.ForeignKey(User,on_delete= models.CASCADE)
-    likes = models.PositiveIntegerField(defaul=0)
+    likes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.image_name
@@ -51,4 +51,4 @@ class Image(models.Model):
     @classmethod
     def get_images_by_user(cls,id):
         posted_images = Image.objects.filter(user_id=id)
-        return posted_images                
+        return posted_images
