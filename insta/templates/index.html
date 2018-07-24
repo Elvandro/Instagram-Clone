@@ -1,4 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1 class="text-center">INSTAGRAM</h1>
+<br>
+<h4 class="text-center">INSTAGRAM</h4>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <p class="text-center">Profile Name {{current_user}}</p>
+        </div>
+        <div class="card-body">
+          <p class="text-center">Profile Picture</p>
+        </div>
+        <div class="card-footer">
+          <p class="text-center">Update Profile<p>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+      <p>Followers</p>
+      <p>Following</p>
+      <p>Create Post</p>
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+      <p>Find Friends</p>
+    </div>
+  </div>
+</div>
 {% endblock %}
