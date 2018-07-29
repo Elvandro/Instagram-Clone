@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block content %}
+{% if found %} {% for user in found %}
+<div class="container mt-2">
+  <div class="row">
+    <div class="col- mx-auto p-5" style="background-color:#ffffff; border: 1px solid #e6e6e6;">
+      <div class="profile p-4">
+        <img src="{{user.profile_photo.url}}" alt="" style="height:70px;width:70px; border-radius:50%; display:inline;">
+        <p class="ml-2" style="display:inline; font-size:25px;"><strong> {{user.user.profile_name}}</strong> found</p>
+        <hr>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-5">
+    <div class="row">
+      <p>Images by <strong><em style="color:#000">{{user.user.profile_name}}</em></strong></p>
+    </div>
+    <div class="row">
+      {% for image in images  %}
+      {% if image.user_key_id == user.user_id %}
+      <div class="col-4 m-2">
+        <img src="{{image.image.url}}" alt="" class="img-fluid">
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endfor%}
+{% endif %}
+{% endblock %}

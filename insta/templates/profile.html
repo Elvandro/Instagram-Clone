@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 "></div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
+      {% for profile in profiles %}
+      <div class="profile p-4" style="white-space:nowrap">
+        <img src="{{profile.profile_photo.url}}" alt="" style="height:70px;width:70px; border-radius:50%; display:inline;">
+        <p class="ml-2" style="display:inline; font-size:25px;"><strong>{{profile.user}}</strong></p>
+        <button class="btn btn-primary ml-3" ><a href="{% url 'edit' %}" style="display:inline; color:#ffffff;">Edit Profile</a></button>
+        <p class="text-center"><span style="font-weight:bolder; font-size:20px">0</span> Followers</span> <span style="margin-left:20px"> <span style="font-weight:bolder; font-size:20px">0</span> Following</span>
+        </p>
+        <hr>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+
+  <div class="row">
+    {% for photo in images %}
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+      <img src="{{photo.image.url}}" alt="" class="img-fluid">
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
