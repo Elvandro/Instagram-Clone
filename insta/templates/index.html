@@ -1,29 +1,60 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 {% block content %}
-<br>
-<h4 class="text-center">INSTAGRAM</h4>
+
 <div class="container">
+  <br>
   <div class="row">
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 "></div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
       <div class="card">
         <div class="card-header">
-          <p class="text-center">Profile Name {{current_user}}</p>
+          <p class="ml-2" style="font-size:20px;">Hi<strong> {{current_user}}</strong>,  Welcome to Instagram</p>
         </div>
         <div class="card-body">
-          <p class="text-center">Profile Picture</p>
+          {% for one_user in user %}
+          <img src="{{one_user.profile_photo.url}}" alt="" >
+          {% endfor %}
         </div>
         <div class="card-footer">
-          <p class="text-center">Update Profile<p>
+          <button class="btn btn-success ml-2"><a href="{% url 'profile' %}" style="display:inline; color:#ffffff;">View Profile</a></button>
+          <button class="btn btn-primary ml-2"><a href="{% url 'post' %}" style="display:inline; color:#ffffff;">Post Image</a></button>
         </div>
       </div>
     </div>
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-      <p>Followers</p>
-      <p>Following</p>
-      <p>Create Post</p>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 ">
     </div>
-    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-      <p>Find Friends</p>
+  </div>
+
+
+  <div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      {% for photo in images %}
+      <div class="container ml-3 mt-3 mb-3 display" style="background-color:#ffffff; border: 1px solid #e6e6e6; border-radius: 5px;">
+        <div class="row">
+          <div class="col- display p-4">
+            <img src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png" alt="" style="height:40px;width:40px; border-radius:50%; display:inline;">
+            <p class="ml-2" style="display:inline; white-space:nowrap;"><strong>{{photo.user_key}}</strong></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col- mx-auto">
+            <img src="{{photo.image.url}}" alt="" class="img-fluid">
+          </div>
+        </div>
+        <div class="likes">
+          <p class="p-3 ml-2">{{photo.image_caption}}</p>
+        </div>
+        <div class="make-comment mb-3">
+          <p class="ml-4 mt-3"><strong class="like-count" data-likeId="{{photo.id}}">{{photo.likes}}</strong><strong> likes</strong></p>
+          <hr>
+          <a id="heart" class="post-likes" data-post-id="{{photo.id}}" style="color:inherit;" href="{% url 'like' operation='like' pk=photo.pk %}">
+            <button class="btn btn-danger ml-2">Like</button>
+          </a>
+          <a class="p-3" href="{% url 'comment' pk=photo.pk %}"> Add Comment</a>
+        </div>
+      </div>
+      {% endfor %}
     </div>
   </div>
 </div>
