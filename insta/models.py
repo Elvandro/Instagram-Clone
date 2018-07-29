@@ -1,13 +1,13 @@
-import datetime as dt
 from django.db import models
 from django.contrib.auth.models import User
+import datetime as dt
 
 # Create your models here.
 class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     profile_name = models.CharField(max_length=30, default='User')
     profile_photo = models.ImageField(upload_to="profiles/")
     bio = models.TextField(blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.profile_name
@@ -19,9 +19,14 @@ class Profile(models.Model):
         self.delete()
 
     @classmethod
+    def get_profiles(cls):
+        profiles = cls.objects.all()
+        return profiles
+
+    @classmethod
     def find_profile(cls, query):
-        found_profiles = cls.objects.filter(profile_name__icontains = query).all()
-        return found_profiles
+        profile = cls.objects.filter(profile_name__icontains = query).all()
+        return profile
 
 class Image(models.Model):
     image = models.ImageField(upload_to="images/")
@@ -31,6 +36,9 @@ class Image(models.Model):
     user_key = models.ForeignKey(User,on_delete= models.CASCADE)
     likes = models.PositiveIntegerField(default=0)
     pub_date = models.DateTimeField(auto_now_add=True, null=True)
+
+    class Meta:
+        ordering = ['-pub_date']
 
     def __str__(self):
         return self.image_name
@@ -58,9 +66,11 @@ class Image(models.Model):
 class Comment(models.Model):
     comment = models.TextField(blank=True)
     date_posted = models.DateTimeField(auto_now_add=True, null=True)
-    Creator = models.ForeignKey(User, on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ForeignKey(Image, on_delete=models.CASCADE)
 
+    class Meta:
+        ordering = ['-date_posted']
 
     def __str__(self):
         return self.comment
@@ -71,10 +81,6 @@ class Comment(models.Model):
     def delete_comment(self):
         self.delete()
 
-    @classmethod
-    def get_comments(cls, image_id):
-        comment = Comment.objects.filter(image=image_id).all().order_by('-date_posted')
-        return comment
 
 class Friend(models.Model):
     users = models.ManyToManyField(User)
