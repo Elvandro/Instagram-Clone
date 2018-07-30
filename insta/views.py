@@ -16,13 +16,15 @@ def index(request):
     images = Image.objects.all()
     profiles = Profile.objects.all()
     user = Profile.objects.filter(user=current_user)
-    content = {
+    comments = Comment.objects.all()
+    locals = {
         "current_user": current_user,
         "images": images,
-        "profiles":profiles,
-        "user": user
+        "profiles": profiles,
+        "user": user,
+        "comments":comments
     }
-    return render(request, 'index.html', content)
+    return render(request, 'index.html', locals)
 
 @login_required(login_url='/accounts/login/')
 def post(request):
@@ -31,12 +33,12 @@ def post(request):
     form = ImageUploadForm()
     for profile in profiles:
         if profile.user.id == current_user.id:
-            if request.method == 'PSOT':
+            if request.method == 'POST':
                 form = ImageUploadForm(request.POST, request.FILES)
                 if form.is_valid():
                     post = form.save(commit=False)
                     post.user_key = current_user
-                    post.profile = profile
+                    post.profile_key = profile
                     post.save()
                     return redirect('index')
             else:
@@ -44,8 +46,8 @@ def post(request):
     return render(request, 'post.html', {"post_form":form, "user": current_user})
 
 @login_required(login_url='/accounts/login/')
-def comment(request, pk):
-    image = get_object_or_404(Image, pk=pk)
+def comment(request, image_id):
+    image = get_object_or_404(Image, id=image_id)
     current_user = request.user
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -108,10 +110,10 @@ def profile(request):
 
 
 @login_required(login_url='/accounts/login/')
-@transaction.atomic
-def add_profile(request):
+def update_profile(request):
     current_user = request.user
     user_profile = Profile.objects.filter(user_id=current_user)
+    form = ProfileUpdateForm()
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -120,9 +122,9 @@ def add_profile(request):
             user_profile.save()
             return redirect('index')
     else:
-        form = ProfileUpdateForm(instance=request.user)
+        form = ProfileUpdateForm()
 
         content = {
             "form": form,
         }
-        return render(request, 'update-profile.html', content)
+        return render(request, 'updateprofile.html', content)
